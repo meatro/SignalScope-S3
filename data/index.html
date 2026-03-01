@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-menu-color="dark" data-topbar-color="dark" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <title>SignalScope | Bored Systems</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SignalScope deterministic dual-CAN gateway and mutation lab.">
+    <meta name="author" content="Bored Systems">
+
+    <link rel="shortcut icon" href="./assets/images/favicon.ico">
+    <link href="./assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="./assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+    <link href="./assets/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="./assets/css/openhaldex-firmware-ui.css" rel="stylesheet" type="text/css" />
+    <link href="./signalscope.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body data-fw-page="signalscope">
+    <div class="wrapper">
+        <div class="navbar-custom">
+            <div class="topbar container-fluid">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="logo-topbar">
+                        <a href="./index.html" class="logo-light">
+                            <span class="logo-lg">
+                                <img src="./assets/images/boredsystems-predictable.png" alt="Bored Systems logo">
+                            </span>
+                            <span class="logo-sm">
+                                <img src="./assets/images/boredsystems-shield.png" alt="Bored Systems shield">
+                            </span>
+                        </a>
+
+                        <a href="./index.html" class="logo-dark">
+                            <span class="logo-lg">
+                                <img src="./assets/images/boredsystems-predictable.png" alt="Bored Systems logo dark">
+                            </span>
+                            <span class="logo-sm">
+                                <img src="./assets/images/boredsystems-shield.png" alt="Bored Systems shield dark">
+                            </span>
+                        </a>
+                    </div>
+
+                    <button class="button-toggle-menu">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                </div>
+
+                <ul class="topbar-menu d-flex align-items-center gap-2">
+                    <li class="d-inline-block">
+                        <div class="nav-link" id="light-dark-mode">
+                            <i class="ri-moon-line fs-22"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="leftside-menu">
+            <a href="./index.html" class="logo logo-light">
+                <span class="logo-lg">
+                    <img src="./assets/images/boredsystems-predictable.png" alt="Bored Systems logo">
+                </span>
+                <span class="logo-sm">
+                    <img src="./assets/images/boredsystems-shield.png" alt="Bored Systems shield">
+                </span>
+            </a>
+
+            <a href="./index.html" class="logo logo-dark">
+                <span class="logo-lg">
+                    <img src="./assets/images/boredsystems-predictable.png" alt="Bored Systems logo dark">
+                </span>
+                <span class="logo-sm">
+                    <img src="./assets/images/boredsystems-shield.png" alt="Bored Systems shield dark">
+                </span>
+            </a>
+
+            <div class="h-100" id="leftside-menu-container" data-simplebar>
+                <ul class="side-nav">
+                    <li class="side-nav-title">Firmware</li>
+
+                    <li class="side-nav-item nav-current">
+                        <a href="./index.html" class="side-nav-link">
+                            <i class="ri-radar-line"></i>
+                            <span>SignalScope</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="#live-frames" class="side-nav-link">
+                            <i class="ri-table-line"></i>
+                            <span>Live Frames</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="#dbc-panel" class="side-nav-link">
+                            <i class="ri-file-upload-line"></i>
+                            <span>DBC</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="#mutation-panel" class="side-nav-link">
+                            <i class="ri-equalizer-line"></i>
+                            <span>Mutation</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item">
+                        <a href="#replay-panel" class="side-nav-link">
+                            <i class="ri-play-circle-line"></i>
+                            <span>Replay</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="./index.html">Firmware</a></li>
+                                        <li class="breadcrumb-item active">SignalScope</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">SignalScope</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3" id="live-frames">
+                        <div class="col-xl-8">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <h4 class="header-title mb-0">Live Frames</h4>
+                                    <button class="btn btn-sm btn-outline-secondary" id="frame-pause">Pause</button>
+                                </div>
+                                <p class="text-muted mb-3">Bidirectional gateway traffic view (A_TO_B and B_TO_A).</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered table-hover align-middle mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>DLC</th>
+                                                    <th>Direction</th>
+                                                    <th>Data</th>
+                                                    <th>Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="frame-table">
+                                                <tr><td colspan="5" class="text-muted">Waiting for CAN frames...</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4">
+                            <div class="card h-100" id="resource-panel">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">Resource Monitor</h4>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between"><span>CPU</span><strong id="cpu-load">-</strong></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>Bus A</span><strong id="bus-a">-</strong></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>Bus B</span><strong id="bus-b">-</strong></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>RX Queue</span><strong id="rx-depth">-</strong></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>Dropped</span><strong id="dropped">-</strong></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>Mutations</span><strong id="mutation-count">0 active</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3" id="dbc-panel">
+                        <div class="col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">DBC Runtime</h4>
+                                    <div class="alert alert-info py-2 mb-3" id="dbc-status">No DBC loaded</div>
+                                    <div class="row g-2">
+                                        <div class="col-md-8">
+                                            <input type="file" class="form-control" id="dbc-file" accept=".dbc,.txt" />
+                                        </div>
+                                        <div class="col-md-4 d-grid">
+                                            <button class="btn btn-primary" id="dbc-upload">Upload DBC</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">Raw Frame Editor</h4>
+                                    <textarea class="form-control" id="raw-editor" rows="4" placeholder="00 00 00 00 00 00 00 00"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3" id="mutation-panel">
+                        <div class="col-xl-8">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">Mutation Editor</h4>
+
+                                    <div class="row g-2">
+                                        <div class="col-md-3">
+                                            <label class="form-label">CAN ID</label>
+                                            <input type="text" class="form-control" id="mut-can-id" placeholder="0x123" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Direction</label>
+                                            <select class="form-select" id="mut-direction">
+                                                <option value="A_TO_B">A_TO_B</option>
+                                                <option value="B_TO_A">B_TO_A</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Signal Picker</label>
+                                            <select class="form-select" id="mut-signal-picker" disabled>
+                                                <option value="">Select a frame with decoded DBC signals</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mt-1">
+                                        <div class="col-md-2">
+                                            <label class="form-label">Start Bit</label>
+                                            <input type="number" class="form-control" id="mut-start-bit" value="0" min="0" max="63" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Length</label>
+                                            <input type="number" class="form-control" id="mut-length" value="8" min="1" max="64" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Endian</label>
+                                            <select class="form-select" id="mut-endian">
+                                                <option value="little">Little</option>
+                                                <option value="big">Big</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Signed</label>
+                                            <select class="form-select" id="mut-signed">
+                                                <option value="false">Unsigned</option>
+                                                <option value="true">Signed</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Factor</label>
+                                            <input type="number" class="form-control" id="mut-factor" value="1" step="any" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Offset</label>
+                                            <input type="number" class="form-control" id="mut-offset" value="0" step="any" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mt-1 align-items-end">
+                                        <div class="col-md-3">
+                                            <label class="form-label">Operation</label>
+                                            <select class="form-select" id="mut-operation">
+                                                <option value="PASS_THROUGH">Pass-through</option>
+                                                <option value="REPLACE">Replace</option>
+                                                <option value="ADD_OFFSET">Add offset</option>
+                                                <option value="MULTIPLY">Multiply</option>
+                                                <option value="CLAMP">Clamp</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3" id="op-param1-group" style="display:none;">
+                                            <label class="form-label" id="op-param1-label">Value</label>
+                                            <input type="number" class="form-control" id="mut-v1" value="0" step="any" />
+                                        </div>
+                                        <div class="col-md-3" id="op-param2-group" style="display:none;">
+                                            <label class="form-label" id="op-param2-label">Value 2</label>
+                                            <input type="number" class="form-control" id="mut-v2" value="0" step="any" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label d-block">Enabled</label>
+                                            <div class="form-check form-switch mt-2">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="mut-enabled" checked />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 d-flex gap-2 flex-wrap">
+                                        <button class="btn btn-primary" id="apply-btn">Stage + Apply</button>
+                                        <button class="btn btn-outline-secondary" id="revert-btn">Revert</button>
+                                        <button class="btn btn-outline-danger" id="clear-staging-btn">Clear All Mutations</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4" id="replay-panel">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">Replay</h4>
+                                    <input type="file" class="form-control mb-2" id="replay-file" accept=".csv,.log,.txt" />
+                                    <select class="form-select mb-2" id="replay-direction">
+                                        <option value="A_TO_B">Replay A_TO_B</option>
+                                        <option value="B_TO_A">Replay B_TO_A</option>
+                                    </select>
+                                    <select class="form-select mb-2" id="replay-loop">
+                                        <option value="PLAY_ONCE">Play Once</option>
+                                        <option value="LOOP_RAW">Loop Raw</option>
+                                        <option value="LOOP_WITH_COUNTER_CONTINUATION">Loop + Counter</option>
+                                    </select>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" id="replay-play">Load + Play</button>
+                                        <button class="btn btn-outline-danger" id="replay-stop">Stop</button>
+                                    </div>
+                                    <p id="replay-status" class="mt-3 mb-0 text-muted">Idle</p>
+                                </div>
+                            </div>
+
+                            <div class="card h-100" id="active-mutations-panel">
+                                <div class="card-body">
+                                    <h4 class="header-title mb-2">Active Mutations</h4>
+                                    <div id="active-mutation-list" class="list-group list-group-flush">
+                                        <div class="text-muted small">No active mutations</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <script>document.write(new Date().getFullYear())</script> &copy; Bored Systems
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="./assets/js/config.js" defer></script>
+    <script src="./assets/js/vendor.min.js" defer></script>
+    <script src="./assets/js/app.js" defer></script>
+    <script src="./assets/js/openhaldex-firmware-ui.js" defer></script>
+    <script src="./signalscope.js" defer></script>
+</body>
+
+</html>
+
