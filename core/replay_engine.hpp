@@ -22,7 +22,7 @@ class ReplayEngine {
 public:
     using TxCallback = bool (*)(const CanFrame& frame);
 
-    static constexpr size_t kMaxReplayFrames = 4096;
+    static constexpr size_t kMaxReplayFrames = 1024;
 
     void init();
     bool loadLogCsv(const char* text, size_t length, Direction default_direction);

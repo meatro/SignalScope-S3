@@ -1,4 +1,4 @@
-#include "dbc_parser.hpp"
+﻿#include "dbc_parser.hpp"
 
 #include <cctype>
 #include <cstdio>
@@ -24,7 +24,8 @@ bool DbcDatabase::parseFromText(const char* text, size_t length) {
 
     char line[320] = {0};
     size_t line_len = 0;
-    bool full_success = true;
+    bool saw_message = false;
+    bool saw_signal = false;
 
     for (size_t i = 0; i <= length; ++i) {
         const char c = (i < length) ? text[i] : '\n';
@@ -44,16 +45,23 @@ bool DbcDatabase::parseFromText(const char* text, size_t length) {
 
         if (line[0] != '\0') {
             if (std::strncmp(line, "BO_", 3) == 0) {
-                full_success = parseMessageLine(line) && full_success;
+                if (parseMessageLine(line)) {
+                    saw_message = true;
+                } else {
+                    // Detach subsequent SG_ lines from prior message on malformed BO_.
+                    current_message_index_ = -1;
+                }
             } else if (std::strncmp(line, "SG_", 3) == 0) {
-                full_success = parseSignalLine(line) && full_success;
+                if (parseSignalLine(line)) {
+                    saw_signal = true;
+                }
             }
         }
 
         line_len = 0;
     }
 
-    return full_success;
+    return saw_message && saw_signal;
 }
 
 const DbcMessageDef* DbcDatabase::findMessage(uint32_t can_id) const {
@@ -133,7 +141,7 @@ bool DbcDatabase::parseSignalLine(const char* line) {
     double factor = 1.0;
     double offset = 0.0;
 
-    const int matched = std::sscanf(
+    int matched = std::sscanf(
         line,
         "SG_ %79s : %u|%u@%u%c (%lf,%lf)",
         name,
@@ -145,6 +153,23 @@ bool DbcDatabase::parseSignalLine(const char* line) {
         &offset);
 
     if (matched != 7) {
+        // Multiplexed lines often include an extra token between signal name and ':'.
+        // Example: SG_ SignalName m0 : 8|8@1+ (1,0)
+        char mux_token[16] = {0};
+        matched = std::sscanf(
+            line,
+            "SG_ %79s %15s : %u|%u@%u%c (%lf,%lf)",
+            name,
+            mux_token,
+            &start_bit,
+            &length,
+            &byte_order,
+            &sign,
+            &factor,
+            &offset);
+    }
+
+    if (matched != 7 && matched != 8) {
         return false;
     }
 

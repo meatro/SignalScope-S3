@@ -27,7 +27,7 @@ struct DbcMessageDef {
 class DbcDatabase {
 public:
     static constexpr size_t kMaxMessages = 128;
-    static constexpr size_t kMaxSignals = 768;
+    static constexpr size_t kMaxSignals = 512;
 
     void clear();
     bool parseFromText(const char* text, size_t length);

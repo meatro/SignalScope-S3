@@ -32,3 +32,84 @@
 #active-mutation-list .list-group-item {
     background: transparent;
 }
+
+.raw-byte-editor .raw-byte-input {
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    text-transform: uppercase;
+}
+
+.raw-bit-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 0.35rem;
+}
+
+.raw-bit-cell {
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 0.45rem;
+    padding: 0.35rem 0.3rem;
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    background: rgba(148, 163, 184, 0.08);
+    cursor: pointer;
+    user-select: none;
+    min-height: 3.4rem;
+}
+
+.raw-bit-cell:hover {
+    border-color: rgba(59, 192, 195, 0.9);
+}
+
+.raw-bit-label {
+    display: block;
+    color: #94a3b8;
+}
+
+.raw-bit-value {
+    display: block;
+    font-weight: 700;
+}
+
+.raw-bit-on {
+    color: #e2e8f0;
+}
+
+.raw-bit-off {
+    color: #64748b;
+}
+
+.raw-bit-selected {
+    border-color: rgba(59, 192, 195, 0.95);
+    background: rgba(59, 192, 195, 0.18);
+}
+
+.raw-bit-start {
+    box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.85) inset;
+}
+
+
+.raw-bit-row-label {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    margin-bottom: 0.1rem;
+}
+
+.raw-bit-override {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.62rem;
+    color: #cbd5e1;
+}
+
+.raw-bit-force1 {
+    border-color: rgba(34, 197, 94, 0.9);
+}
+
+.raw-bit-force0 {
+    border-color: rgba(239, 68, 68, 0.9);
+}
